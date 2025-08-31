@@ -1,0 +1,64 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100dvw !important;
+  height: 100dvh !important;
+}
+
+#containerRef {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100dvw !important;
+  height: 100dvh !important;
+}
+
+#video_source {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100dvw !important;
+  height: 100dvh !important;
+  object-fit: cover;
+  z-index: 4;
+}
+
+#threejs-scene {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100dvw !important;
+  height: 100dvh !important;
+  object-fit: cover;
+  z-index: 5;
+}
+
+.button_container{
+  width: 100vw;
+  position: absolute;
+  display:flex;
+  flex-direction:row;
+  height: 3rem;
+  bottom: 0;
+  z-index: 10;
+}
+
+.button_container button{
+  flex:1;
+}
+
+.button_container_models{
+  position: absolute;
+  width: 100vw;
+  display:flex;
+  flex-direction:row;
+  height: 3rem;
+  top:0;
+  z-index: 10;
+}
+
+.button_container_models button{
+  flex:1;
+}
