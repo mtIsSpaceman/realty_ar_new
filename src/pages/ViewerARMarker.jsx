@@ -5,11 +5,15 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import BottomNav from "../components/BottomNav";
 import ToggleSwitch from "../components/ToggleSwitch";
 import { useNavigate } from "react-router-dom";
+//
+import Loader from "../components/Loader";
 
 export default function ViewerAR({ modelSRC }) {
   const navigate = useNavigate();
   window.THREE = THREE;
 
+  const [modelSRCState, setModelSRCState] = useState(modelSRC);
+  const [modelName, setModelName] = useState("model_1");
   const arVContainerRef = useRef();
   const arToolkitSourceRef = useRef();
   const gltfLoader = new GLTFLoader();
@@ -19,7 +23,6 @@ export default function ViewerAR({ modelSRC }) {
   const modelRef = useRef();
 
   useEffect(() => {
-
     const initAR = () => {
       let scene, camera, renderer;
       let arToolkitSource, arToolkitContext;
@@ -195,7 +198,7 @@ export default function ViewerAR({ modelSRC }) {
 
     // load new model
     gltfLoader.load(
-      modelSRC,
+      modelSRCState,
       (gltf) => {
         // Clean old model
         if (modelRef.current) {
@@ -225,7 +228,17 @@ export default function ViewerAR({ modelSRC }) {
       },
       (err) => console.error("Error loading model:", err)
     );
-  }, [modelSRC]);
+  }, [modelSRCState]);
+
+  useEffect(() => {
+    if (modelSRCState === "/models/new_appartment.glb") {
+      setModelName("model_1");
+    } else if (modelSRCState === "/models/appartment_final.glb") {
+      setModelName("model_2");
+    } else if (modelSRCState === "/models/appartment_3.glb") {
+      setModelName("model_3");
+    }
+  }, [modelSRCState]);
 
   useEffect(() => {
     let isMounted = true;
@@ -246,28 +259,23 @@ export default function ViewerAR({ modelSRC }) {
     };
   }, []);
 
-  return (
+  const setModelSRC = (src) => {
+    // This function can be used to change the modelSRC from BottomNav
+    console.log("Setting model SRC to:", src);
+    setModelSRCState(src);
+  };
 
+  return (
     <div
       ref={arVContainerRef}
       id="arVContainerRef"
       style={{ width: "100%", height: "100%" }}
+      className="z-10"
     >
-      {!loaded && <BottomNav active="ar" />}
-    </div>
+      <ToggleSwitch />
+      {!loaded && <Loader />}
 
-    // <div  className="flex flex-col justify-between h-screen bg-gray-200 w-[100%]">
-    //   <ToggleSwitch />
-    //   <div className="flex flex-col justify-center items-center flex-1">
-    //     <h2 className="text-lg font-semibold mb-6">AR Viewer</h2>
-    //     <button className="bg-blue-500 text-white px-10 py-5 rounded-2xl mb-6">
-    //       I have a marker
-    //     </button>
-    //     <button className="bg-blue-500 text-white px-10 py-5 rounded-2xl">
-    //       View in my space
-    //     </button>
-    //   </div>
-    //   <BottomNav active="ar" />
-    // </div>
+      <BottomNav active={modelName} setModelSRC={setModelSRC} />
+    </div>
   );
 }

@@ -9,8 +9,7 @@ import ToggleSwitch from "../components/ToggleSwitch";
 import Loader from "../components/Loader";
 
 export default function Viewer3D({ modelSRC }) {
-
-   const mVContainerRef = useRef();
+  const mVContainerRef = useRef();
 
   const sceneRef = useRef();
   const cameraRef = useRef();
@@ -18,6 +17,8 @@ export default function Viewer3D({ modelSRC }) {
   const controlsRef = useRef();
   const modelRef = useRef();
 
+  const [modelSRCState, setModelSRCState] = useState(modelSRC);
+  const [modelName, setModelName] = useState("model_1");
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
@@ -36,7 +37,10 @@ export default function Viewer3D({ modelSRC }) {
     camera.position.set(5, 5, 10);
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true, });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      logarithmicDepthBuffer: true,
+    });
     renderer.setSize(
       mVContainerRef.current.clientWidth,
       mVContainerRef.current.clientHeight
@@ -97,7 +101,7 @@ export default function Viewer3D({ modelSRC }) {
     setLoaded(false);
 
     loader.load(
-      modelSRC,
+      modelSRCState,
       (gltf) => {
         // Clean old model
         if (modelRef.current) {
@@ -115,7 +119,7 @@ export default function Viewer3D({ modelSRC }) {
         }
 
         // Add new model
-        gltf.scene.scale.set(5, 5, 5);
+        gltf.scene.scale.set(20, 20, 20);
         sceneRef.current.add(gltf.scene);
         modelRef.current = gltf.scene;
 
@@ -129,16 +133,32 @@ export default function Viewer3D({ modelSRC }) {
       },
       (error) => console.error(error)
     );
-  }, [modelSRC]);
+  }, [modelSRCState]);
+
+  useEffect(() => {
+    if (modelSRCState === "/models/new_appartment.glb") {
+      setModelName("model_1");
+    } else if (modelSRCState === "/models/appartment_final.glb") {
+      setModelName("model_2");
+    } else if (modelSRCState === "/models/appartment_3.glb") {
+      setModelName("model_3");
+    }
+  }, [modelSRCState]);
+
+  const setModelSRC = (src) => {
+    // This function can be used to change the modelSRC from BottomNav
+    setModelSRCState(src);
+  };
 
   return (
-    <div ref={mVContainerRef} className="flex flex-col justify-between h-screen bg-gray-200 w-[100%]">
+    <div
+      ref={mVContainerRef}
+      className="flex flex-col justify-between h-screen bg-gray-200 w-[100%]"
+    >
       <ToggleSwitch />
-      {!loaded && 
-      <Loader/>
-      }
-      
-      <BottomNav active="3d" />
+      {!loaded && <Loader />}
+
+      <BottomNav active={modelName} setModelSRC={setModelSRC} />
     </div>
   );
 }

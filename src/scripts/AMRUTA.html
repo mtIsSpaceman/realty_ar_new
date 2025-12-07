@@ -1,0 +1,34 @@
+<!DOCTYPE html></DOCTYPE>
+<html>
+    <head>
+        <title>Javascript Variables and data types</title>
+
+    </head>
+    <body style="font-family:Arial;margin:20px;">
+        <h2>Javascript Variables and data types example </h2>
+        <p id="output"></p>
+
+        <script>
+            //Declaring Variables of different types
+            var name = "Amruta";
+            let age =17;
+            const pi= 3.12345;
+            let isstudent = true;
+            let marks = [34,56,60];
+            let person = {name:"Amruta",city:"Mumbai"};
+            let x;
+            let emptyValue = null;
+
+            //displaying output
+            document.getElementById("output").innerHTML =
+            "<b>Name:</b>" + name + "<br>" +
+             "<b>AGE:</b>" + age + "<br>" +
+             "<b>PI:</b>" + pi + "<br>" +
+             "<b>ISSTUDENT:</b>" + isstudent + "<br>" +
+             "<b>MARks:</b>" + marks + "<br>" +
+             "<b>Person:</b>" + JSON.stringify(person) + "<br>" +
+             "<b>UNdefined Value:</b>" + emptyValue;
+
+        </script>
+    </body>
+</html>
