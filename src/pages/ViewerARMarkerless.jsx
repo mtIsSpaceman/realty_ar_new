@@ -43,8 +43,9 @@ export default function ViewerAR() {
   const plane_size_multiplier = 1; // Keep constants like this accessible
 
   // Load LaunchAR SDK Dynamically
+  // <script src="https://launchar.app/sdk/v1?key=JdjA4xH5g9SkyBLC8Qd0eY4GI6AMiV2x&redirect=true"></script>
   useEffect(() => {
-    const launchArKey = "7K8m9CvWzYgXwWdZgfbZJrxTFN14fqmJ"; // Replace with your actual key if different
+    const launchArKey = "JdjA4xH5g9SkyBLC8Qd0eY4GI6AMiV2"; // Replace with your actual key if different
     const scriptId = "launchar-sdk-script";
 
     // Check if script already exists
