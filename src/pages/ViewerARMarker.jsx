@@ -215,6 +215,12 @@ export default function ViewerAR({ modelSRC }) {
           });
         }
 
+        gltf.scene.traverse((child) => {
+          if (child.isMesh) {
+            child.material.side = THREE.DoubleSide;
+          }
+        });
+
         setLoaded(true);
         gltf.scene.scale.set(5, 5, 5);
         markerRoot1Ref.current.add(gltf.scene);
