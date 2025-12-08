@@ -4,16 +4,22 @@ import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
 import BottomNav from "../components/BottomNav";
 import ToggleSwitch from "../components/ToggleSwitch";
 import { useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
-export default function ViewerAR() {
+export default function ViewerAR(modelSRC) {
   const navigate = useNavigate();
 
+  const [modelSRCState, setModelSRCState] = useState(modelSRC);
+  const [modelName, setModelName] = useState("model_1");
+  const [progress, setProgress] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const mountRef = useRef(null); // Ref for the container div where renderer attaches
   const overlayRef = useRef(null); // Ref for the overlay div
   const videoRef = useRef(null); // Ref for the video element
   const lookForSurfaceIconRef = useRef(null);
   const closeArButtonRef = useRef(null);
   const middlePartRef = useRef(null); // Ref for AR button container
+  const modelRef = useRef();
 
   // Refs to store Three.js objects and mutable state without causing re-renders
   const threeStuff = useRef({
@@ -45,7 +51,7 @@ export default function ViewerAR() {
   // Load LaunchAR SDK Dynamically
   // <script src="https://launchar.app/sdk/v1?key=JdjA4xH5g9SkyBLC8Qd0eY4GI6AMiV2x&redirect=true"></script>
   useEffect(() => {
-    const launchArKey = "JdjA4xH5g9SkyBLC8Qd0eY4GI6AMiV2"; // Replace with your actual key if different
+    const launchArKey = "JdjA4xH5g9SkyBLC8Qd0eY4GI6AMiV2x"; // Replace with your actual key if different
     const scriptId = "launchar-sdk-script";
 
     // Check if script already exists
@@ -471,64 +477,64 @@ export default function ViewerAR() {
       threeStuff.front_scene = new THREE.Group();
       threeStuff.front_scene.visible = false; // Start hidden
 
-      const videoTexture1 = new THREE.VideoTexture(currentVideo);
-      videoTexture1.needsUpdate = true; // Important for video textures
+      // const videoTexture1 = new THREE.VideoTexture(currentVideo);
+      // videoTexture1.needsUpdate = true; // Important for video textures
 
-      const geometry1 = new THREE.PlaneGeometry(
-        1.125 * plane_size_multiplier,
-        2 * plane_size_multiplier
-      );
+      // const geometry1 = new THREE.PlaneGeometry(
+      //   1.125 * plane_size_multiplier,
+      //   2 * plane_size_multiplier
+      // );
 
       // Main video plane material
-      const chromakeyMaterial1 = new THREE.ShaderMaterial({
-        transparent: true,
-        uniforms: {
-          map: { value: videoTexture1 },
-          keyColor: { value: [0.0, 1.0, 0.0] }, // Green screen
-          similarity: { value: 0.74 },
-          smoothness: { value: 0.05 }, // Added slight smoothness
-        },
-        vertexShader: vertexShader,
-        fragmentShader: fragmentShader,
-        side: THREE.DoubleSide,
-        depthWrite: false, // Often needed for transparent objects to sort correctly
-      });
+      // const chromakeyMaterial1 = new THREE.ShaderMaterial({
+      //   transparent: true,
+      //   uniforms: {
+      //     map: { value: videoTexture1 },
+      //     keyColor: { value: [0.0, 1.0, 0.0] }, // Green screen
+      //     similarity: { value: 0.74 },
+      //     smoothness: { value: 0.05 }, // Added slight smoothness
+      //   },
+      //   vertexShader: vertexShader,
+      //   fragmentShader: fragmentShader,
+      //   side: THREE.DoubleSide,
+      //   depthWrite: false, // Often needed for transparent objects to sort correctly
+      // });
 
-      threeStuff.frontFrame = new THREE.Mesh(geometry1, chromakeyMaterial1);
-      threeStuff.frontFrame.position.set(
-        0,
-        (2 * plane_size_multiplier * 0.9) / 3,
-        0
-      ); // Position relative to group center
+      // threeStuff.frontFrame = new THREE.Mesh(geometry1, chromakeyMaterial1);
+      // threeStuff.frontFrame.position.set(
+      //   0,
+      //   (2 * plane_size_multiplier * 0.9) / 3,
+      //   0
+      // ); // Position relative to group center
 
-      // Shadow plane material
-      const chromakeyMaterial1Shadow = new THREE.ShaderMaterial({
-        transparent: true,
-        uniforms: {
-          map: { value: videoTexture1 },
-          keyColor: { value: [0.0, 1.0, 0.0] },
-          similarity: { value: 0.74 },
-          smoothness: { value: 0.05 }, // Match smoothness
-        },
-        vertexShader: vertexShaderShadow,
-        fragmentShader: fragmentShaderShadow,
-        side: THREE.DoubleSide,
-        depthWrite: false, // Shadows shouldn't write to depth buffer typically
-      });
+      // // Shadow plane material
+      // const chromakeyMaterial1Shadow = new THREE.ShaderMaterial({
+      //   transparent: true,
+      //   uniforms: {
+      //     map: { value: videoTexture1 },
+      //     keyColor: { value: [0.0, 1.0, 0.0] },
+      //     similarity: { value: 0.74 },
+      //     smoothness: { value: 0.05 }, // Match smoothness
+      //   },
+      //   vertexShader: vertexShaderShadow,
+      //   fragmentShader: fragmentShaderShadow,
+      //   side: THREE.DoubleSide,
+      //   depthWrite: false, // Shadows shouldn't write to depth buffer typically
+      // });
 
-      const geometry1Shadow = geometry1.clone(); // Reuse geometry definition
-      threeStuff.frontFrameShadow = new THREE.Mesh(
-        geometry1Shadow,
-        chromakeyMaterial1Shadow
-      );
+      // const geometry1Shadow = geometry1.clone(); // Reuse geometry definition
+      // threeStuff.frontFrameShadow = new THREE.Mesh(
+      //   geometry1Shadow,
+      //   chromakeyMaterial1Shadow
+      // );
       // Position the shadow slightly below and behind the main plane, rotated flat
-      threeStuff.frontFrameShadow.position.set(0, -0.01, -0.01); // Small offset below main plane
-      threeStuff.frontFrameShadow.rotation.x = -Math.PI / 2; // Lay flat
+      // threeStuff.frontFrameShadow.position.set(0, -0.01, -0.01); // Small offset below main plane
+      // threeStuff.frontFrameShadow.rotation.x = -Math.PI / 2; // Lay flat
       // Scale shadow slightly larger for effect?
       // threeStuff.frontFrameShadow.scale.set(1.05, 1.05, 1.05);
 
-      threeStuff.front_scene.add(threeStuff.frontFrame);
-      threeStuff.front_scene.add(threeStuff.frontFrameShadow);
+      // threeStuff.front_scene.add(threeStuff.frontFrame);
+      // threeStuff.front_scene.add(threeStuff.frontFrameShadow);
       threeStuff.scene.add(threeStuff.front_scene); // Add group to the main scene
     }
 
@@ -717,11 +723,81 @@ export default function ViewerAR() {
 
       console.log("Cleanup complete.");
     };
-  }, [ threeStuff]); // Add dependencies that, if changed, should trigger re-initialization. `threeStuff` is stable ref object.
+  }, [threeStuff]); // Add dependencies that, if changed, should trigger re-initialization. `threeStuff` is stable ref object.
 
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    setLoaded(false);
+    setProgress(0);
+
+    // make sure markerRoot1Ref.current exists in your initAR
+    if (!threeStuff.front_scene) return;
+
+    // cleanup old models
+    while (threeStuff.front_scene.children.length > 0) {
+      threeStuff.front_scene.remove(threeStuff.front_scene.children[0]);
+    }
+
+    // load new model
+    gltfLoader.load(
+      modelSRCState,
+      (gltf) => {
+        // Clean old model
+        if (modelRef.current) {
+          threeStuff.front_scene.remove(modelRef.current);
+          modelRef.current.traverse((child) => {
+            if (child.isMesh) {
+              child.geometry.dispose();
+              if (Array.isArray(child.material)) {
+                child.material.forEach((m) => m.dispose());
+              } else {
+                child.material.dispose();
+              }
+            }
+          });
+        }
+
+        gltf.scene.traverse((child) => {
+          if (child.isMesh) {
+            child.material.side = THREE.DoubleSide;
+          }
+        });
+
+        setLoaded(true);
+        gltf.scene.scale.set(5, 5, 5);
+        threeStuff.front_scene.add(gltf.scene);
+        modelRef.current = gltf.scene;
+      },
+      (xhr) => {
+        if (xhr.total) {
+          const percent = (xhr.loaded / xhr.total) * 100;
+          setProgress(percent);
+        }
+      },
+      (err) => console.error("Error loading model:", err)
+    );
+  }, [modelSRCState]);
+
+  useEffect(() => {
+    if (modelSRCState === "/models/new_appartment.glb") {
+      setModelName("model_1");
+    } else if (modelSRCState === "/models/appartment_final.glb") {
+      setModelName("model_2");
+    } else if (modelSRCState === "/models/appartment_3.glb") {
+      setModelName("model_3");
+    }
+  }, [modelSRCState]);
+
+  const setModelSRC = (src) => {
+    // This function can be used to change the modelSRC from BottomNav
+    console.log("Setting model SRC to:", src);
+    setModelSRCState(src);
+  };
 
   return (
-    <><div
+    <>
+      <div
         ref={mountRef}
         style={{
           position: "absolute",
@@ -743,8 +819,6 @@ export default function ViewerAR() {
           left: 0,
           width: "100%",
           height: "100%",
-          pointerEvents:
-            "none" /* Allow clicks to pass through unless on a button */,
         }}
       >
         <div
@@ -755,6 +829,10 @@ export default function ViewerAR() {
             pointerEvents: "none" /* Icon itself isn't interactive */,
           }}
         ></div>
+        <ToggleSwitch />
+        {!loaded && <Loader />}
+
+        <BottomNav active={modelName} setModelSRC={setModelSRC} />
       </div>
       <div ref={middlePartRef}></div>
     </>
