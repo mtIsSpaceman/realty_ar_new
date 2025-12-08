@@ -5,8 +5,9 @@ import BottomNav from "../components/BottomNav";
 import ToggleSwitch from "../components/ToggleSwitch";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-export default function ViewerAR(modelSRC) {
+export default function ViewerAR({modelSRC}) {
   const navigate = useNavigate();
 
   const [modelSRCState, setModelSRCState] = useState(modelSRC);
@@ -20,6 +21,7 @@ export default function ViewerAR(modelSRC) {
   const closeArButtonRef = useRef(null);
   const middlePartRef = useRef(null); // Ref for AR button container
   const modelRef = useRef();
+  const gltfLoader = new GLTFLoader();
 
   // Refs to store Three.js objects and mutable state without causing re-renders
   const threeStuff = useRef({
@@ -471,8 +473,8 @@ export default function ViewerAR(modelSRC) {
     }
 
     function createScene() {
-      const currentVideo = videoRef.current;
-      if (!currentVideo || !threeStuff.scene) return;
+      // const currentVideo = videoRef.current;
+      // if (!currentVideo || !threeStuff.scene) return;
 
       threeStuff.front_scene = new THREE.Group();
       threeStuff.front_scene.visible = false; // Start hidden
@@ -535,6 +537,13 @@ export default function ViewerAR(modelSRC) {
 
       // threeStuff.front_scene.add(threeStuff.frontFrame);
       // threeStuff.front_scene.add(threeStuff.frontFrameShadow);
+
+      const boxGeometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+      const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+      const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
+      boxMesh.position.set(0, 0.05, 0);
+      threeStuff.front_scene.add(boxMesh);
+
       threeStuff.scene.add(threeStuff.front_scene); // Add group to the main scene
     }
 
@@ -768,10 +777,13 @@ export default function ViewerAR(modelSRC) {
         gltf.scene.scale.set(5, 5, 5);
         threeStuff.front_scene.add(gltf.scene);
         modelRef.current = gltf.scene;
+
+        console.log("Model loaded and added to scene.");
       },
       (xhr) => {
         if (xhr.total) {
           const percent = (xhr.loaded / xhr.total) * 100;
+          console.log("Model loading progress:", percent);
           setProgress(percent);
         }
       },
@@ -828,7 +840,7 @@ export default function ViewerAR(modelSRC) {
             visibility: "hidden",
             pointerEvents: "none" /* Icon itself isn't interactive */,
           }}
-        ></div>
+        ><p>Look for flat surface</p></div>
         <ToggleSwitch />
         {!loaded && <Loader />}
 

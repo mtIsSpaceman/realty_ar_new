@@ -64,3 +64,17 @@ body {
 .button_container_models button{
   flex:1;
 }
+
+#look_for_surface_icon {
+  position: absolute;
+  width: 50vw;
+  height: 30vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+  /* background-image: url("../assets/icons/001.png"); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
