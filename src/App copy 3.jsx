@@ -7,7 +7,7 @@ import ViewerARMarker from "./pages/ViewerARMarker";
 import ViewerARMarkerless from "./pages/ViewerARMarkerless";
 
 function App() {
-    const [modelSRC, setModelSRC] = useState("/models/new_appartment.glb")
+    const [modelSRC, setModelSRC] = useState("/models/new_appartment-v1.glb")
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const navigate = useNavigate();
   return (

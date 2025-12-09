@@ -774,7 +774,7 @@ export default function ViewerAR({modelSRC}) {
         });
 
         setLoaded(true);
-        gltf.scene.scale.set(5, 5, 5);
+        gltf.scene.scale.set(1, 1, 1);
         threeStuff.front_scene.add(gltf.scene);
         modelRef.current = gltf.scene;
 
@@ -792,11 +792,11 @@ export default function ViewerAR({modelSRC}) {
   }, [modelSRCState]);
 
   useEffect(() => {
-    if (modelSRCState === "/models/new_appartment.glb") {
+    if (modelSRCState === "/models/new_appartment-v1.glb") {
       setModelName("model_1");
-    } else if (modelSRCState === "/models/appartment_final.glb") {
+    } else if (modelSRCState === "/models/appartment_final-v1.glb") {
       setModelName("model_2");
-    } else if (modelSRCState === "/models/appartment_3.glb") {
+    } else if (modelSRCState === "/models/appartment_3-v1.glb") {
       setModelName("model_3");
     }
   }, [modelSRCState]);

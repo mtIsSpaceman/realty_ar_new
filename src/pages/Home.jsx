@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
-  const [modelSRC, setModelSRC] = useState("/models/new_appartment.glb");
+  const [modelSRC, setModelSRC] = useState("/models/new_appartment-v1.glb");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
 

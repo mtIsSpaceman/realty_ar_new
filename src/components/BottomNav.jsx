@@ -10,7 +10,7 @@ export default function BottomNav({ active, setModelSRC }) {
           active === "model_1" ? "bg-white text-blue-500" : "bg-blue-400"
         }`}
         onClick={()=>{
-          setModelSRC("/models/new_appartment.glb");
+          setModelSRC("/models/new_appartment-v1.glb");
         }}
       ></div>
 
@@ -19,7 +19,7 @@ export default function BottomNav({ active, setModelSRC }) {
           active === "model_2" ? "bg-white text-blue-500" : "bg-blue-400"
         }`}
         onClick={()=>{
-          setModelSRC("/models/appartment_final.glb");
+          setModelSRC("/models/appartment_final-v1.glb");
         }}
       ></div>
 
@@ -28,7 +28,7 @@ export default function BottomNav({ active, setModelSRC }) {
           active === "model_3" ? "bg-white text-blue-500" : "bg-blue-400"
         }`}
         onClick={()=>{
-          setModelSRC("/models/appartment_3.glb");
+          setModelSRC("/models/appartment_3-v1.glb");
         }}
       ></div>
     </div>
