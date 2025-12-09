@@ -78,3 +78,13 @@ body {
   background-repeat: no-repeat;
   background-position: center;
 }
+
+#ARButton{
+  top:70%;
+  height: max-content;
+  background-color: #2b7fff !important;
+}
+
+#arVContainerRef{
+  position: absolute;
+}

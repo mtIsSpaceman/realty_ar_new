@@ -783,7 +783,6 @@ export default function ViewerAR({modelSRC}) {
       (xhr) => {
         if (xhr.total) {
           const percent = (xhr.loaded / xhr.total) * 100;
-          console.log("Model loading progress:", percent);
           setProgress(percent);
         }
       },
