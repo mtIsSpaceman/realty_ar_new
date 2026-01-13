@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function ToggleSwitch() {
+export default function ToggleSwitch({isEnabled}) {
   const [enabled, setEnabled] = useState(false);
+
+  useEffect(()=>{
+    isEnabled = enabled;
+  },[enabled])
 
   return (
     <div
-      onClick={() => setEnabled(!enabled)}
+      onClick={() => {setEnabled(!enabled)}}
       className={`w-10 h-5 m-10 absolute flex items-center rounded-full p-1 cursor-pointer ${
         enabled ? "bg-blue-700" : "bg-gray-400"
       }`}

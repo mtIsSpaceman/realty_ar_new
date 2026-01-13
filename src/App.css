@@ -37,32 +37,32 @@ body {
   z-index: 5;
 }
 
-.button_container{
+.button_container {
   width: 100vw;
   position: absolute;
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
   height: 3rem;
   bottom: 0;
   z-index: 10;
 }
 
-.button_container button{
-  flex:1;
+.button_container button {
+  flex: 1;
 }
 
-.button_container_models{
+.button_container_models {
   position: absolute;
   width: 100vw;
-  display:flex;
-  flex-direction:row;
+  display: flex;
+  flex-direction: row;
   height: 3rem;
-  top:0;
+  top: 0;
   z-index: 10;
 }
 
-.button_container_models button{
-  flex:1;
+.button_container_models button {
+  flex: 1;
 }
 
 #look_for_surface_icon {
@@ -79,12 +79,40 @@ body {
   background-position: center;
 }
 
-#ARButton{
-  top:70%;
+#ARButton {
+  top: 70%;
   height: max-content;
   background-color: #2b7fff !important;
 }
 
-#arVContainerRef{
+#arVContainerRef {
   position: absolute;
+}
+
+.hotspots_parent{
+  position: absolute;
+  left: 0;
+  bottom: 10%;
+  height: 10vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.pointer_line {
+  position: absolute;
+  width: 2px;
+  background-color: blue;
+}
+
+.details_plate{
+  position: absolute;
+  z-index: 10;
+  bottom: 10%;
+  left: 50vw;
+  transform: translate(-50%, 0);
+  width: 100px;
+  height: 100px;
+  background-color: red;
 }

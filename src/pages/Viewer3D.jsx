@@ -7,6 +7,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import BottomNav from "../components/BottomNav";
 import ToggleSwitch from "../components/ToggleSwitch";
 import Loader from "../components/Loader";
+//
+import { Hotspot } from "../components/Hotspots";
 
 export default function Viewer3D({ modelSRC }) {
   const mVContainerRef = useRef();
@@ -21,6 +23,8 @@ export default function Viewer3D({ modelSRC }) {
   const [modelName, setModelName] = useState("model_1");
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
+
+  const hotspotRefs = useRef([]);
 
   // === Initialize scene/camera/renderer ONCE ===
   useEffect(() => {
@@ -63,6 +67,7 @@ export default function Viewer3D({ modelSRC }) {
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
+      hotspotRefs.current.forEach((hs) => hs?.update());
       controls.update();
       renderer.render(scene, camera);
     };
@@ -150,6 +155,12 @@ export default function Viewer3D({ modelSRC }) {
     setModelSRCState(src);
   };
 
+  const hotspotData = [
+    { id: 1, position: new THREE.Vector3(1, 2, 0), label: "Living Room" },
+    { id: 2, position: new THREE.Vector3(-2, 1, 1), label: "Kitchen" },
+    { id: 3, position: new THREE.Vector3(0, 3, -1), label: "Bedroom" },
+  ];
+
   return (
     <div
       ref={mVContainerRef}
@@ -159,6 +170,17 @@ export default function Viewer3D({ modelSRC }) {
       {!loaded && <Loader />}
 
       <BottomNav active={modelName} setModelSRC={setModelSRC} />
+      {modelRef.current &&
+        cameraRef.current &&
+        hotspotData.map((spot, index) => (
+          <Hotspot
+            key={spot.id}
+            ref={(el) => (hotspotRefs.current[index] = el)}
+            pos={spot.position}
+            camera={cameraRef.current}
+            label={spot.label}
+          />
+        ))}
     </div>
   );
 }

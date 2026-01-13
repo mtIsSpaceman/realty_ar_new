@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Viewer3D from "./pages/Viewer3D";
 import ViewerAR from "./pages/ViewerAR";
 import ViewerARMarker from "./pages/ViewerARMarker";
-import ViewerARMarkerless from "./pages/ViewerARMarkerless";
+import ViewerARMarkerless from "./pages/ViewerARMarkerless_2";
 
 function App() {
     const [modelSRC, setModelSRC] = useState("/models/new_appartment-v1.glb")

@@ -85,17 +85,17 @@ export default function ViewerAR({ modelSRC }) {
         }
       }
 
-      arToolkitSourceRef.current.init(function onReady() {
-        onResize();
-        //arVContainerRef.current.appendChild(arToolkitSourceRef.current.domElement);
-        arToolkitSourceRef.current.domElement.setAttribute(
-          "id",
-          "video_source"
-        );
+      // arToolkitSourceRef.current.init(function onReady() {
+      //   onResize();
+      //   //arVContainerRef.current.appendChild(arToolkitSourceRef.current.domElement);
+      //   arToolkitSourceRef.current.domElement.setAttribute(
+      //     "id",
+      //     "video_source"
+      //   );
 
-        console.log(arToolkitSourceRef.current);
-        renderer.setSize(sourceWidth, sourceHeight);
-      });
+      //   console.log(arToolkitSourceRef.current);
+      //   renderer.setSize(sourceWidth, sourceHeight);
+      // });
 
       // handle resize event
       window.addEventListener("resize", function () {
