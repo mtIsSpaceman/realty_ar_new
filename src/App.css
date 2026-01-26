@@ -107,7 +107,7 @@ body {
 }
 
 .details_plate{
-  position: absolute;
+  position: relative;
   z-index: 10;
   bottom: 10%;
   left: 50vw;
@@ -116,3 +116,25 @@ body {
   height: 100px;
   background-color: red;
 }
+
+.info_panel_parent {
+  position: absolute;
+  bottom: 10vh;
+  width: 100vw;
+  height: 13vh;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.info_panel {
+  flex: 0 0 auto;
+  width: 25vw;
+  height: 10vh;
+  background-color: red;
+}
+

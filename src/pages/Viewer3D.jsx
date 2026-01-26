@@ -9,6 +9,8 @@ import ToggleSwitch from "../components/ToggleSwitch";
 import Loader from "../components/Loader";
 //
 import { Hotspot } from "../components/Hotspots";
+import { InfoPanel } from "../components/infoPanel";
+import { Line } from "../components/Line";
 
 export default function Viewer3D({ modelSRC }) {
   const mVContainerRef = useRef();
@@ -24,7 +26,8 @@ export default function Viewer3D({ modelSRC }) {
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
-  const hotspotRefs = useRef([]);
+  const panelRefs = useRef([]);
+  const lineRefs = useRef([]);
 
   // === Initialize scene/camera/renderer ONCE ===
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function Viewer3D({ modelSRC }) {
       60,
       mVContainerRef.current.clientWidth / mVContainerRef.current.clientHeight,
       0.1,
-      1000
+      1000,
     );
     camera.position.set(5, 5, 10);
     cameraRef.current = camera;
@@ -47,7 +50,7 @@ export default function Viewer3D({ modelSRC }) {
     });
     renderer.setSize(
       mVContainerRef.current.clientWidth,
-      mVContainerRef.current.clientHeight
+      mVContainerRef.current.clientHeight,
     );
     mVContainerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -67,7 +70,9 @@ export default function Viewer3D({ modelSRC }) {
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      hotspotRefs.current.forEach((hs) => hs?.update());
+      lineRefs.current.forEach((line) => {
+        if (line?.update) line.update();
+      });
       controls.update();
       renderer.render(scene, camera);
     };
@@ -81,7 +86,7 @@ export default function Viewer3D({ modelSRC }) {
       camera.updateProjectionMatrix();
       renderer.setSize(
         mVContainerRef.current.clientWidth,
-        mVContainerRef.current.clientHeight
+        mVContainerRef.current.clientHeight,
       );
     };
     window.addEventListener("resize", handleResize);
@@ -136,7 +141,7 @@ export default function Viewer3D({ modelSRC }) {
           setProgress(percent);
         }
       },
-      (error) => console.error(error)
+      (error) => console.error(error),
     );
   }, [modelSRCState]);
 
@@ -159,6 +164,8 @@ export default function Viewer3D({ modelSRC }) {
     { id: 1, position: new THREE.Vector3(1, 2, 0), label: "Living Room" },
     { id: 2, position: new THREE.Vector3(-2, 1, 1), label: "Kitchen" },
     { id: 3, position: new THREE.Vector3(0, 3, -1), label: "Bedroom" },
+    { id: 4, position: new THREE.Vector3(0, 2.5, -1), label: "Bedroom" },
+    { id: 5, position: new THREE.Vector3(0, 2.8, -1), label: "Bedroom" },
   ];
 
   return (
@@ -170,17 +177,30 @@ export default function Viewer3D({ modelSRC }) {
       {!loaded && <Loader />}
 
       <BottomNav active={modelName} setModelSRC={setModelSRC} />
-      {modelRef.current &&
-        cameraRef.current &&
-        hotspotData.map((spot, index) => (
-          <Hotspot
-            key={spot.id}
-            ref={(el) => (hotspotRefs.current[index] = el)}
-            pos={spot.position}
-            camera={cameraRef.current}
-            label={spot.label}
-          />
-        ))}
+      {modelRef.current && cameraRef.current && (
+        <>
+          <div className="info_panel_parent">
+            {hotspotData.map((spot, index) => (
+              <InfoPanel
+                key={spot.id}
+                ref={(el) => (panelRefs.current[index] = el)}
+              />
+            ))}
+          </div>
+
+          <div>
+            {hotspotData.map((spot, index) => (
+              <Line
+                key={spot.id}
+                ref={(el) => (lineRefs.current[index] = el)}
+                ele={panelRefs.current[index]}
+                pos={spot.position}
+                camera={cameraRef.current}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
